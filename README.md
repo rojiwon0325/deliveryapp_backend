@@ -3,6 +3,7 @@
 ## To Do List - 새로 공부할 것들
 
 - [ ] 카카오등의 api를 활용한 인증서비스
+      참고: https://developers.kakao.com/docs/latest/ko/kakaologin/common
 - [ ] 아임포트를 도입하여 결제 서비스
 - [ ] swagger 작성법 및 RESTAPI 공부
   - [x] swagger 모듈 설치

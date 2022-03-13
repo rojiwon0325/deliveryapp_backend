@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from '@user/user.module';
 import { AuthModule } from '@auth/auth.module';
+import { User } from '@user/user.entity';
 
 @Module({
   imports: [
@@ -20,11 +21,15 @@ import { AuthModule } from '@auth/auth.module';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'prod', 'test').default('dev'),
         PORT: Joi.number().default(3000),
+
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_DATABASE: Joi.string().required(),
+
+        KAKAO_CLIENTID: Joi.string().required(),
+        KAKAO_REDIRECT_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -36,7 +41,7 @@ import { AuthModule } from '@auth/auth.module';
       database: process.env.DB_DATABASE,
       synchronize: true,
       logging: false,
-      entities: [],
+      entities: [User],
     }),
     UserModule,
     AuthModule,

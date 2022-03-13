@@ -12,6 +12,7 @@
     "baseUrl": "./",
     "paths":{
       "@auth/*":["src/auth/*"],
+      "@common/*":["src/common/*"],
       "@mail/*":["src/mail/*"],
       "@user/*":["src/user/*"],
     },
