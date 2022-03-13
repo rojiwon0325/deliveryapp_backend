@@ -10,3 +10,13 @@
 
 - [ ] test code 작성
 - [ ] passport 모듈 활용
+
+## Module
+
+- [ ] User
+- [ ] Auth
+- [ ] Restaurant
+- [ ] Upload
+- [ ] Mail
+
+- 결제, 주문 등 모듈 구현방식 미정
