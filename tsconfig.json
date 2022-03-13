@@ -15,6 +15,7 @@
       "@common/*":["src/common/*"],
       "@mail/*":["src/mail/*"],
       "@user/*":["src/user/*"],
+      "@jwt/*":["src/jwt/*"],
     },
     "incremental": true,
     "skipLibCheck": true,

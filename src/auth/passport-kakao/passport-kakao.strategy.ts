@@ -1,8 +1,8 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-kakao';
-import { KakaoPayload } from './auth.dto';
+import { KakaoPayload } from './passport-kakao.dto';
 
-export class KakaoStrategy extends PassportStrategy(Strategy) {
+export class PassportKakaoStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
       clientID: process.env.KAKAO_CLIENTID,

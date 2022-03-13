@@ -2,11 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UserModule } from '@user/user.module';
-import { AuthModule } from '@auth/auth.module';
-import { User } from '@user/user.entity';
+import { AuthModule, children } from '@auth/auth.module';
+import { User } from '@user/entity/user.entity';
+import { Kakao } from '@user/entity/kakao.entity';
+import { RouterModule } from '@nestjs/core';
+import { JwtModule } from '@jwt/jwt.module';
 
 @Module({
   imports: [
@@ -21,6 +22,9 @@ import { User } from '@user/user.entity';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'prod', 'test').default('dev'),
         PORT: Joi.number().default(3000),
+
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRESIN: Joi.string().required(),
 
         DB_HOST: Joi.string().required(),
         DB_PORT: Joi.string().required(),
@@ -41,12 +45,18 @@ import { User } from '@user/user.entity';
       database: process.env.DB_DATABASE,
       synchronize: true,
       logging: false,
-      entities: [User],
+      entities: [User, Kakao],
     }),
-    UserModule,
     AuthModule,
+    JwtModule,
+    UserModule,
+    RouterModule.register([
+      {
+        path: 'auth',
+        module: AuthModule,
+        children,
+      },
+    ]),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

@@ -9,6 +9,10 @@ export enum UserRole {
   Admin = 'Admin',
 }
 
+export enum PassportType {
+  Kakao = 'Kakao',
+}
+
 @Entity()
 export class User extends CoreEntity {
   @Column({ nullable: true })
@@ -20,12 +24,9 @@ export class User extends CoreEntity {
   @Column({ type: 'enum', enum: UserRole })
   role: UserRole;
 
-  @Column()
-  kakao_id: number;
+  @Column({ type: 'enum', enum: PassportType })
+  passport_type: PassportType;
 
   @Column({ nullable: true })
-  kakao_token?: string;
-
-  @Column({ nullable: true })
-  kakao_refreshtoken?: string;
+  passport_id?: number;
 }
