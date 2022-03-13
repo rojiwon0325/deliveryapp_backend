@@ -1321,14 +1321,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ]],\
       ["@nestjs/core", [\
         ["npm:8.4.0", {\
-          "packageLocation": "./.yarn/unplugged/@nestjs-core-virtual-51557fac66/node_modules/@nestjs/core/",\
+          "packageLocation": "./.yarn/cache/@nestjs-core-npm-8.4.0-d58cab643b-83dc369822.zip/node_modules/@nestjs/core/",\
           "packageDependencies": [\
             ["@nestjs/core", "npm:8.4.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
         ["virtual:ca8058363db9e8cfc3f53badfbca48e022f56d9a4dd775b63177c09583518f288a6c75874eb36b3c9222e71ac8dd3077d46889fb09d8d07c05aae02bbf994822#npm:8.4.0", {\
-          "packageLocation": "./.yarn/unplugged/@nestjs-core-virtual-51557fac66/node_modules/@nestjs/core/",\
+          "packageLocation": "./.yarn/__virtual__/@nestjs-core-virtual-51557fac66/0/cache/@nestjs-core-npm-8.4.0-d58cab643b-83dc369822.zip/node_modules/@nestjs/core/",\
           "packageDependencies": [\
             ["@nestjs/core", "virtual:ca8058363db9e8cfc3f53badfbca48e022f56d9a4dd775b63177c09583518f288a6c75874eb36b3c9222e71ac8dd3077d46889fb09d8d07c05aae02bbf994822#npm:8.4.0"],\
             ["@nestjs/common", "virtual:ca8058363db9e8cfc3f53badfbca48e022f56d9a4dd775b63177c09583518f288a6c75874eb36b3c9222e71ac8dd3077d46889fb09d8d07c05aae02bbf994822#npm:8.4.0"],\
