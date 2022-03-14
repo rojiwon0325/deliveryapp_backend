@@ -10,25 +10,25 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
-import { PassportKakaoService } from './passport-kakao.service';
+import { PassportNaverService } from './passport-naver.service';
 
 @Controller()
-export class PassportKakaoController {
-  constructor(private readonly kakaoService: PassportKakaoService) {}
+export class PassportNaverController {
+  constructor(private readonly naverService: PassportNaverService) {}
   @Get()
   @HttpCode(200)
-  @UseGuards(AuthGuard('kakao'))
+  @UseGuards(AuthGuard('naver'))
   async kakaoLogin() {
     return HttpStatus.OK;
   }
 
   @Get('oauth')
   @HttpCode(200)
-  @UseGuards(AuthGuard('kakao'))
+  @UseGuards(AuthGuard('naver'))
   async kakaoLoginCallback(
     @Req() req: any,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return this.kakaoService.login(req.user as AuthPayload, res);
+    return this.naverService.login(req.user as AuthPayload, res);
   }
 }

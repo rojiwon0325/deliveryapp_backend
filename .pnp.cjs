@@ -67,6 +67,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["passport", "npm:0.5.2"],\
             ["passport-jwt", "npm:4.0.0"],\
             ["passport-kakao", "npm:1.0.1"],\
+            ["passport-naver", "npm:1.0.6"],\
             ["pg", "virtual:ca8058363db9e8cfc3f53badfbca48e022f56d9a4dd775b63177c09583518f288a6c75874eb36b3c9222e71ac8dd3077d46889fb09d8d07c05aae02bbf994822#npm:8.7.3"],\
             ["prettier", "npm:2.5.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -3244,6 +3245,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["base64url", [\
+        ["npm:3.0.1", {\
+          "packageLocation": "./.yarn/cache/base64url-npm-3.0.1-4c171c4917-a77b2a3a52.zip/node_modules/base64url/",\
+          "packageDependencies": [\
+            ["base64url", "npm:3.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["binary-extensions", [\
         ["npm:2.2.0", {\
           "packageLocation": "./.yarn/cache/binary-extensions-npm-2.2.0-180c33fec7-ccd267956c.zip/node_modules/binary-extensions/",\
@@ -4161,6 +4171,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["passport", "npm:0.5.2"],\
             ["passport-jwt", "npm:4.0.0"],\
             ["passport-kakao", "npm:1.0.1"],\
+            ["passport-naver", "npm:1.0.6"],\
             ["pg", "virtual:ca8058363db9e8cfc3f53badfbca48e022f56d9a4dd775b63177c09583518f288a6c75874eb36b3c9222e71ac8dd3077d46889fb09d8d07c05aae02bbf994822#npm:8.7.3"],\
             ["prettier", "npm:2.5.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -7634,6 +7645,40 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["passport-naver", [\
+        ["npm:1.0.6", {\
+          "packageLocation": "./.yarn/cache/passport-naver-npm-1.0.6-e48807861e-4e8ac7d469.zip/node_modules/passport-naver/",\
+          "packageDependencies": [\
+            ["passport-naver", "npm:1.0.6"],\
+            ["passport-oauth", "npm:1.0.0"],\
+            ["underscore", "npm:1.13.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["passport-oauth", [\
+        ["npm:1.0.0", {\
+          "packageLocation": "./.yarn/cache/passport-oauth-npm-1.0.0-dd172fea30-e6d908ac6c.zip/node_modules/passport-oauth/",\
+          "packageDependencies": [\
+            ["passport-oauth", "npm:1.0.0"],\
+            ["passport-oauth1", "npm:1.2.0"],\
+            ["passport-oauth2", "npm:1.6.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["passport-oauth1", [\
+        ["npm:1.2.0", {\
+          "packageLocation": "./.yarn/cache/passport-oauth1-npm-1.2.0-7f9ca1c0d0-b38444da71.zip/node_modules/passport-oauth1/",\
+          "packageDependencies": [\
+            ["passport-oauth1", "npm:1.2.0"],\
+            ["oauth", "npm:0.9.15"],\
+            ["passport-strategy", "npm:1.0.0"],\
+            ["utils-merge", "npm:1.0.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["passport-oauth2", [\
         ["npm:1.1.2", {\
           "packageLocation": "./.yarn/cache/passport-oauth2-npm-1.1.2-df98943d50-f59e80a075.zip/node_modules/passport-oauth2/",\
@@ -7642,6 +7687,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["oauth", "npm:0.9.15"],\
             ["passport-strategy", "npm:1.0.0"],\
             ["uid2", "npm:0.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.6.1", {\
+          "packageLocation": "./.yarn/cache/passport-oauth2-npm-1.6.1-2799fe66c7-2a5b01a884.zip/node_modules/passport-oauth2/",\
+          "packageDependencies": [\
+            ["passport-oauth2", "npm:1.6.1"],\
+            ["base64url", "npm:3.0.1"],\
+            ["oauth", "npm:0.9.15"],\
+            ["passport-strategy", "npm:1.0.0"],\
+            ["uid2", "npm:0.0.4"],\
+            ["utils-merge", "npm:1.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -9587,6 +9644,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/uid2-npm-0.0.4-cd02831b83-e92325ce2e.zip/node_modules/uid2/",\
           "packageDependencies": [\
             ["uid2", "npm:0.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["underscore", [\
+        ["npm:1.13.2", {\
+          "packageLocation": "./.yarn/cache/underscore-npm-1.13.2-209368f9f2-6ab156c845.zip/node_modules/underscore/",\
+          "packageDependencies": [\
+            ["underscore", "npm:1.13.2"]\
           ],\
           "linkType": "HARD"\
         }]\

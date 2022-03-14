@@ -1,6 +1,6 @@
+import { AuthPayload } from '@auth/auth.dto';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-kakao';
-import { KakaoPayload } from './passport-kakao.dto';
 
 export class PassportKakaoStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -13,8 +13,8 @@ export class PassportKakaoStrategy extends PassportStrategy(Strategy) {
   async validate(accessToken, refreshToken, profile, done) {
     const profileJson = profile._json;
     const kakao_account = profileJson.kakao_account;
-    const payload: KakaoPayload = {
-      kakao_id: profileJson.id,
+    const payload: AuthPayload = {
+      passport_id: profileJson.id + '',
       username: kakao_account.profile.nickname,
       email: kakao_account.email ?? null,
       access_token: accessToken ?? null,

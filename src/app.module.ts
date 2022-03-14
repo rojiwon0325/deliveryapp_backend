@@ -33,6 +33,10 @@ import { JwtModule } from '@jwt/jwt.module';
 
         KAKAO_CLIENTID: Joi.string().required(),
         KAKAO_REDIRECT_URL: Joi.string().required(),
+
+        NAVER_CLIENTID: Joi.string().required(),
+        NAVER_SECRET: Joi.string().required(),
+        NAVER_REDIRECT_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({

@@ -11,6 +11,7 @@ export enum UserRole {
 
 export enum PassportType {
   Kakao = 'Kakao',
+  Naver = 'Naver',
 }
 
 @Entity()

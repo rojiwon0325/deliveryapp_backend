@@ -1,5 +1,5 @@
-export class KakaoPayload {
-  kakao_id: number;
+export class AuthPayload {
+  passport_id: string;
   username: string;
   email: string | null;
   access_token: string | null;

@@ -6,7 +6,7 @@ import { UserService } from '@user/user.service';
 import { Response } from 'express';
 
 @Injectable()
-export class PassportKakaoService {
+export class PassportNaverService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
@@ -14,7 +14,7 @@ export class PassportKakaoService {
   async login(payload: AuthPayload, res: Response) {
     try {
       const jwtpayload = await this.userService.readOrCreateByPassport({
-        passport_type: PassportType.Kakao,
+        passport_type: PassportType.Naver,
         ...payload,
       });
       const token = this.jwtService.sign(jwtpayload);
