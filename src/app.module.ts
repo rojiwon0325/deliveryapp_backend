@@ -7,6 +7,7 @@ import { AuthModule, children } from '@auth/auth.module';
 import { User } from '@user/user.entity';
 import { RouterModule } from '@nestjs/core';
 import { JwtModule } from '@jwt/jwt.module';
+import { CommonModule } from '@common/common.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { JwtModule } from '@jwt/jwt.module';
     AuthModule,
     JwtModule,
     UserModule,
+    CommonModule,
     RouterModule.register([
       {
         path: 'auth',

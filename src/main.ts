@@ -9,7 +9,13 @@ async function bootstrap() {
     logger: ['error', 'warn', 'debug'],
   });
   app.use(cookieParser());
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: true,
+      whitelist: true,
+      transform: true,
+    }),
+  );
   const config = new DocumentBuilder()
     .setTitle('Delivery App Swagger')
     .setDescription('Delivery App API description')

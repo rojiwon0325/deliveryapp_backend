@@ -1,4 +1,5 @@
 import { AuthPayload } from '@auth/auth.dto';
+import { Public } from '@common/public.decorator';
 import {
   Controller,
   Get,
@@ -16,6 +17,7 @@ import { PassportKakaoService } from './passport-kakao.service';
 export class PassportKakaoController {
   constructor(private readonly kakaoService: PassportKakaoService) {}
   @Get()
+  @Public()
   @HttpCode(200)
   @UseGuards(AuthGuard('kakao'))
   async kakaoLogin() {
@@ -23,6 +25,7 @@ export class PassportKakaoController {
   }
 
   @Get('oauth')
+  @Public()
   @HttpCode(200)
   @UseGuards(AuthGuard('kakao'))
   async kakaoLoginCallback(

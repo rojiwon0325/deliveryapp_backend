@@ -1,4 +1,5 @@
 import { AuthPayload } from '@auth/auth.dto';
+import { Public } from '@common/public.decorator';
 import {
   Controller,
   Get,
@@ -16,6 +17,7 @@ import { PassportNaverService } from './passport-naver.service';
 export class PassportNaverController {
   constructor(private readonly naverService: PassportNaverService) {}
   @Get()
+  @Public()
   @HttpCode(200)
   @UseGuards(AuthGuard('naver'))
   async kakaoLogin() {
@@ -23,6 +25,7 @@ export class PassportNaverController {
   }
 
   @Get('oauth')
+  @Public()
   @HttpCode(200)
   @UseGuards(AuthGuard('naver'))
   async kakaoLoginCallback(

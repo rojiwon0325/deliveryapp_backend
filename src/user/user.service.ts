@@ -43,10 +43,11 @@ export class UserService {
 
   async readById({ id }: ByIdDTO): Promise<UserPartial | null> {
     try {
-      return this.userRepositry.findOne(
+      const { email, ...user } = await this.userRepositry.findOne(
         { id },
         { select: ['email', 'username', 'role'] },
       );
+      return { ...user, ...(email && { email }) };
     } catch {
       return null;
     }
@@ -54,13 +55,13 @@ export class UserService {
 
   async updateRole({ id, role }: UpdateRole): Promise<UserPartial | null> {
     try {
-      const user = await this.userRepositry.findOneOrFail(
+      const { email, ...user } = await this.userRepositry.findOneOrFail(
         { id },
         { select: ['email', 'username', 'role'] },
       );
       user.role = role;
       await this.userRepositry.save(user);
-      return user;
+      return { ...user, ...(email && { email }) };
     } catch {
       return null;
     }

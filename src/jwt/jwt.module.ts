@@ -1,6 +1,8 @@
 import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule as OriginalModule } from '@nestjs/jwt';
+import { JwtAuthGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt.strategy';
 
 @Global()
@@ -19,7 +21,7 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [JwtStrategy],
+  providers: [JwtStrategy, { provide: APP_GUARD, useClass: JwtAuthGuard }],
   exports: [OriginalModule],
 })
 export class JwtModule {}

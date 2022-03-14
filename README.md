@@ -19,6 +19,7 @@
 
 - [ ] test code 작성
 - [ ] passport 모듈 활용
+- [ ] validation
 
 ## Module
 
