@@ -14,9 +14,11 @@ export class PassportKakaoStrategy extends PassportStrategy(Strategy) {
     const profileJson = profile._json;
     const kakao_account = profileJson.kakao_account;
     const payload: KakaoPayload = {
-      kakaoId: profileJson.id,
+      id: profileJson.id,
       username: kakao_account.profile.nickname,
       email: kakao_account.email ?? null,
+      access_token: accessToken ?? null,
+      refresh_token: refreshToken ?? null,
     };
     done(null, payload);
   }

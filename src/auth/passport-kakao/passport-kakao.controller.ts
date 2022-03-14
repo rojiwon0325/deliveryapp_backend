@@ -4,9 +4,11 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Response } from 'express';
 import { KakaoPayload } from './passport-kakao.dto';
 import { PassportKakaoService } from './passport-kakao.service';
 
@@ -23,7 +25,10 @@ export class PassportKakaoController {
   @Get('oauth')
   @HttpCode(200)
   @UseGuards(AuthGuard('kakao'))
-  async kakaoLoginCallback(@Req() req): Promise<{ access_token: string }> {
-    return this.kakaoService.login(req.user as KakaoPayload);
+  async kakaoLoginCallback(
+    @Req() req: any,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return this.kakaoService.login(req.user as KakaoPayload, res);
   }
 }
