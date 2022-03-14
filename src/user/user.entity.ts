@@ -28,5 +28,11 @@ export class User extends CoreEntity {
   passport_type: PassportType;
 
   @Column()
-  passport_id: number;
+  passport_id: string;
+
+  @Column({ nullable: true })
+  access_token?: string;
+
+  @Column({ nullable: true })
+  refresh_token?: string;
 }

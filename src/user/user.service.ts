@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from './entity/user.entity';
-import { CreateDTO, ByIdDTO, ByPassportDTO, UpdateRole } from './user.dto';
+import { User } from './user.entity';
+import {
+  ByIdDTO,
+  ByPassportDTO,
+  ReadorCreateDTO,
+  UpdateRole,
+  UserPartial,
+} from './user.dto';
+import { JwtPayload } from '@jwt/jwt.dto';
 
 @Injectable()
 export class UserService {
@@ -10,36 +17,47 @@ export class UserService {
     @InjectRepository(User) private readonly userRepositry: Repository<User>,
   ) {}
 
-  async create(dto: CreateDTO): Promise<User | null> {
-    try {
-      const user = await this.userRepositry.save(
-        this.userRepositry.create(dto),
-      );
-      return user;
-    } catch {
-      return null;
-    }
-  }
-  async readById({ id }: ByIdDTO): Promise<User | null> {
-    try {
-      return this.userRepositry.findOne(id);
-    } catch {
-      return null;
-    }
-  }
-  async readByPassport({
-    passport_id,
+  async readOrCreateByPassport({
     passport_type,
-  }: ByPassportDTO): Promise<User | null> {
+    passport_id,
+    ...rest
+  }: ReadorCreateDTO): Promise<JwtPayload | null> {
     try {
-      return this.userRepositry.findOne({ passport_type, passport_id });
+      const user = await this.userRepositry.findOne({
+        passport_type,
+        passport_id,
+      });
+      if (user) {
+        for (const [key, val] of Object.entries(rest)) user[key] = val;
+        const { id, username } = await this.userRepositry.save(user);
+        return { sub: id, username };
+      }
+      const { id, username } = await this.userRepositry.save(
+        this.userRepositry.create({ ...rest, passport_type, passport_id }),
+      );
+      return { sub: id, username };
     } catch {
       return null;
     }
   }
-  async updateRole({ id, role }: UpdateRole): Promise<User | null> {
+
+  async readById({ id }: ByIdDTO): Promise<UserPartial | null> {
     try {
-      const user = await this.userRepositry.findOneOrFail({ id });
+      return this.userRepositry.findOne(
+        { id },
+        { select: ['email', 'username', 'role'] },
+      );
+    } catch {
+      return null;
+    }
+  }
+
+  async updateRole({ id, role }: UpdateRole): Promise<UserPartial | null> {
+    try {
+      const user = await this.userRepositry.findOneOrFail(
+        { id },
+        { select: ['email', 'username', 'role'] },
+      );
       user.role = role;
       await this.userRepositry.save(user);
       return user;
@@ -55,12 +73,13 @@ export class UserService {
       return false;
     }
   }
+
   async deleteByPassport({
-    passport_id,
     passport_type,
+    passport_id,
   }: ByPassportDTO): Promise<boolean> {
     try {
-      await this.userRepositry.delete({ passport_id, passport_type });
+      await this.userRepositry.delete({ passport_type, passport_id });
       return true;
     } catch {
       return false;

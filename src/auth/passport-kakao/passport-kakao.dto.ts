@@ -1,5 +1,5 @@
 export class KakaoPayload {
-  id: string;
+  kakao_id: number;
   username: string;
   email: string | null;
   access_token: string | null;

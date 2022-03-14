@@ -2,12 +2,11 @@ import { Global, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
-import { Kakao } from '@auth/passport-kakao/kakao/kakao.entity';
+import { User } from './user.entity';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Kakao])],
+  imports: [TypeOrmModule.forFeature([User])],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],
