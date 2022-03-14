@@ -9,6 +9,8 @@
   - [x] kakao-login에서 유저 데이터 및 토큰 저장 => 로직 구체화할 것
         참고: https://developers.kakao.com/docs/latest/ko/kakaologin/common
 
+- [ ] 로그아웃 & 회원탈퇴 기능 추가
+
 - [ ] 아임포트를 도입하여 결제 서비스
 - [ ] swagger 작성법 및 RESTAPI 공부
   - [x] swagger 모듈 설치
