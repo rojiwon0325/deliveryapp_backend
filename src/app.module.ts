@@ -5,7 +5,7 @@ import * as Joi from 'joi';
 import { UserModule } from '@user/user.module';
 import { AuthModule, children } from '@auth/auth.module';
 import { User } from '@user/entity/user.entity';
-import { Kakao } from '@user/entity/kakao.entity';
+import { Kakao } from '@auth/passport-kakao/kakao/kakao.entity';
 import { RouterModule } from '@nestjs/core';
 import { JwtModule } from '@jwt/jwt.module';
 

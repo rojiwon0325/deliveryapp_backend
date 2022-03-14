@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
-import { Kakao } from './entity/kakao.entity';
+import { Kakao } from '@auth/passport-kakao/kakao/kakao.entity';
 
 @Global()
 @Module({

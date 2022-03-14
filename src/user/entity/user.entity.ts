@@ -21,12 +21,12 @@ export class User extends CoreEntity {
   @Column()
   username: string;
 
-  @Column({ type: 'enum', enum: UserRole })
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.Undefined })
   role: UserRole;
 
   @Column({ type: 'enum', enum: PassportType })
   passport_type: PassportType;
 
-  @Column({ nullable: true })
-  passport_id?: number;
+  @Column()
+  passport_id: number;
 }
