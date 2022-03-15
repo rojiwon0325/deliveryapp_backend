@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PassportKakaoStrategy } from './passport-kakao.strategy';
 import { PassportKakaoController } from './passport-kakao.controller';
-import { PassportKakaoService } from './passport-kakao.service';
+import { PassportService } from '@auth/passport.service';
 
 @Module({
-  providers: [PassportKakaoStrategy, PassportKakaoService],
+  providers: [PassportKakaoStrategy, PassportService],
   controllers: [PassportKakaoController],
 })
 export class PassportKakaoModule {}

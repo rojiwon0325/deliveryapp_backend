@@ -1,65 +1,41 @@
-import { PassportType, UserRole } from './user.entity';
-import {
-  IsEmail,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-export class UserPartial {
-  @IsEmail()
-  @IsOptional()
-  email?: string;
+import { User } from './user.entity';
+import { IsNumber, IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CoreResult } from '@common/common.dto';
+import { PickType } from '@nestjs/swagger';
+export class UserPartial extends PickType(User, [
+  'id',
+  'email',
+  'username',
+  'role',
+] as const) {}
+export class ReadorCreateDTO extends PickType(User, [
+  'email',
+  'username',
+  'passport_type',
+  'passport_id',
+  'access_token',
+  'refresh_token',
+]) {}
 
-  @IsString()
-  username: string;
-
-  @IsEnum(UserRole)
-  role: UserRole;
-}
-export class ReadorCreateDTO {
-  @IsEmail()
-  @IsOptional()
-  email?: string;
-
-  @IsString()
-  username: string;
-
-  @IsEnum(PassportType)
-  passport_type: PassportType;
-
-  @IsString()
-  passport_id: string;
-
-  @IsString()
-  access_token?: string;
-
-  @IsString()
-  refresh_token?: string;
-}
-
-export class ByIdDTO {
+export class FindUserIdParams {
   @IsNumber()
-  id: number;
+  userId: number;
 }
 
-export class ByPassportDTO {
-  @IsEnum(PassportType)
-  passport_type: PassportType;
+export class ByIdDTO extends PickType(User, ['id']) {}
 
-  @IsString()
-  passport_id: string;
-}
+export class ByPassportDTO extends PickType(User, [
+  'passport_type',
+  'passport_id',
+]) {}
 
-export class UpdateRole {
-  @IsNumber()
-  id: number;
+export class UpdateRole extends PickType(User, ['id', 'role']) {}
+export class UpdateRoleDTO extends PickType(User, ['role']) {}
 
-  @IsEnum(UserRole)
-  role: UserRole;
-}
-
-export class UpdateRoleDTO {
-  @IsEnum(UserRole)
-  role: UserRole;
+export class UserPartialResult extends CoreResult {
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => UserPartial)
+  result?: UserPartial;
 }

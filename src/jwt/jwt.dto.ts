@@ -1,4 +1,10 @@
+import { UserRole } from '@user/user.entity';
+import { IsEnum, IsNumber } from 'class-validator';
+
 export class JwtPayload {
+  @IsNumber()
   sub: number;
-  username: string;
+
+  @IsEnum(UserRole)
+  role: UserRole;
 }

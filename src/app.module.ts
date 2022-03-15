@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
-import { UserModule } from '@user/user.module';
-import { AuthModule, children } from '@auth/auth.module';
-import { User } from '@user/user.entity';
-import { RouterModule } from '@nestjs/core';
-import { JwtModule } from '@jwt/jwt.module';
-import { CommonModule } from '@common/common.module';
+import { CommonModule } from './common/common.module';
+import { AuthModule, children } from './auth/auth.module';
+import { JwtModule } from './jwt/jwt.module';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
+import { Restaurant } from './restaurant/restaurant.entity';
+import { RestaurantModule } from './restaurant/restaurant.module';
 
 @Module({
   imports: [
@@ -49,12 +51,12 @@ import { CommonModule } from '@common/common.module';
       database: process.env.DB_DATABASE,
       synchronize: true,
       logging: false,
-      entities: [User],
+      entities: [User, Restaurant],
     }),
     AuthModule,
     JwtModule,
-    UserModule,
     CommonModule,
+    UserModule,
     RouterModule.register([
       {
         path: 'auth',
@@ -62,6 +64,7 @@ import { CommonModule } from '@common/common.module';
         children,
       },
     ]),
+    RestaurantModule,
   ],
 })
 export class AppModule {}

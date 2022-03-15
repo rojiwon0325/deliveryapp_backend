@@ -11,7 +11,7 @@
 
 - [ ] 로그아웃 & 회원탈퇴 기능 추가
 
-- [ ] 아임포트를 도입하여 결제 서비스
+- [x] 아임포트를 도입하여 결제 서비스 -> 실제 사업자가 아니면 제한이 많음, 생략
 - [ ] swagger 작성법 및 RESTAPI 공부
   - [x] swagger 모듈 설치
 
@@ -19,12 +19,13 @@
 
 - [ ] test code 작성
 - [ ] passport 모듈 활용
-- [ ] validation
+- [ ] validation & transform
+  - [ ] service함수에 validation하기 위해선 추가 구현이 필요
 
 ## Module
 
-- [ ] User
-- [ ] Auth
+- [x] User
+- [x] Auth
 - [ ] Restaurant
 - [ ] Upload
 - [ ] Mail
