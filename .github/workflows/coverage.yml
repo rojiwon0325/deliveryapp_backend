@@ -20,15 +20,17 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Action Checkout
-      uses: actions/checkout@v2
-
-    - name: Jest coverage report
-      uses: ArtiomTr/jest-coverage-report-action@v2.0.5
-
+    - uses: actions/checkout@v2
+    - uses: ArtiomTr/jest-coverage-report-action@v2.0.5
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         test-script: yarn jest
         package-manager: yarn
         skip-step: install
         annotations: none
+    
+    - name: Deploy Coverage Report
+      uses: JamesIves/github-pages-deploy-action@v4.2.5
+      with:
+        branch: gh-pages
+        folder: coverage/lcov-report
