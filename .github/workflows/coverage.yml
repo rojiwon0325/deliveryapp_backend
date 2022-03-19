@@ -5,7 +5,7 @@ name: Jest Coverage
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
     branches:
       - main
@@ -30,4 +30,5 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         test-script: yarn jest
         package-manager: yarn
+        skip-step: install
         annotations: none
