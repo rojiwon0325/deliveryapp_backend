@@ -10,6 +10,7 @@
         참고: https://developers.kakao.com/docs/latest/ko/kakaologin/common
 
 - [ ] 로그아웃 & 회원탈퇴 기능 추가 -> 구현후에 test code 작성하기
+
   - [ ] 인증 서버에서 토큰 만료 -> https/post를 반환하는 과정에서 cors문제 발생
   - [ ] db에서 토큰 데이터 제거
   - [x] jwt토큰 쿠키 제거 후 redirect
@@ -23,6 +24,7 @@
 - [ ] test code 작성
   - [x] unit Test
   - [ ] e2e Test
+  - [ ] github action 자동화 세팅
 - [x] passport 모듈 활용
 - [ ] validation & transform
   - [ ] service함수에 validation하기 위해선 추가 구현이 필요
