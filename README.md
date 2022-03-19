@@ -21,7 +21,9 @@
 ## To Do List - 미숙한 것들
 
 - [ ] test code 작성
-- [ ] passport 모듈 활용
+  - [x] unit Test
+  - [ ] e2e Test
+- [x] passport 모듈 활용
 - [ ] validation & transform
   - [ ] service함수에 validation하기 위해선 추가 구현이 필요
 
