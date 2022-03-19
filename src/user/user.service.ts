@@ -74,10 +74,11 @@ export class UserService {
 
   async readById({ id }: ByIdDTO): Promise<UserPartial | null> {
     try {
-      return this.userRepositry.findOne(
+      const user = await this.userRepositry.findOneOrFail(
         { id },
         { select: ['email', 'username', 'role', 'id'] },
       );
+      return user;
     } catch {
       return null;
     }
@@ -85,7 +86,7 @@ export class UserService {
 
   async readPassportById({ id }: ByIdDTO): Promise<UserPassport | null> {
     try {
-      return this.userRepositry.findOne(
+      const user = await this.userRepositry.findOneOrFail(
         { id },
         {
           select: [
@@ -97,6 +98,7 @@ export class UserService {
           ],
         },
       );
+      return user;
     } catch {
       return null;
     }

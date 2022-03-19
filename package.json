@@ -99,7 +99,21 @@
       "^@restaurant/(.*)$":"<rootDir>/../src/restaurant/$1",
       "^@user/(.*)$":"<rootDir>/../src/user/$1",
       "^@jwt/(.*)$":"<rootDir>/../src/jwt/$1"
-    }
+    },
+    "coveragePathIgnorePatterns": [
+      "main.ts",
+      ".dto.ts",
+      ".entity.ts",
+      ".module.ts",
+      ".resolver.ts",
+      ".controller.ts",
+      ".constant.ts",
+      ".interface.ts",
+      ".middleware.ts",
+      ".guard.ts",
+      ".strategy.ts",
+      ".decorator.ts"
+    ]
   },
   "packageManager": "yarn@3.2.0"
 }
