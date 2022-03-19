@@ -27,7 +27,6 @@ jobs:
       uses: ArtiomTr/jest-coverage-report-action@v2.0.5
 
       with:
-        github-token: ${{ secrets.SECRET_TOKEN }}
         test-script: yarn jest
         package-manager: yarn
         coverage-file: ./coverage/report.json   
