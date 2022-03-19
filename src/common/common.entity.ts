@@ -1,7 +1,6 @@
 import { IsDate, IsNumber } from 'class-validator';
-import { CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
 export class CoreEntity {
   @PrimaryGeneratedColumn()
   @IsNumber()

@@ -46,19 +46,22 @@ export class UserService {
       ]);
       if (user) {
         for (const [key, val] of Object.entries(rest)) user[key] = val;
-        if (email !== null && exist === null) user.email = email; // email 정보가 변경된 경우
+        if (email !== null && exist === null) user.email = email; // email 정보가 존재하는 경우
+        // email이 존재하지만 기존과 같으면 변경 x
+        // email이 존재하고 기존과 다르고 이미 사용중이면 변경 x
+        // email이 존재하고 사용중이지 않으면 변경
         const { id, role } = await this.userRepositry.save(user);
         return { sub: id, role };
       } // 사용자가 이미 있는 경우
 
-      if (exist && user.id !== exist.id) {
+      if (exist) {
         return false;
       } // 사용자는 없지만 이메일이 이미 사용중인 경우
 
       const { id, role } = await this.userRepositry.save(
         this.userRepositry.create({
           ...rest,
-          email,
+          ...(email && { email }),
           passport_type,
           passport_id,
         }),

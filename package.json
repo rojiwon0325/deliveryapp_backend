@@ -90,7 +90,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$":"<rootDir>/../src/$1",
+      "^@auth/(.*)$":"<rootDir>/../src/auth/$1",
+      "^@common/(.*)$":"<rootDir>/../src/common/$1",
+      "^@mail/(.*)$":"<rootDir>/../src/mail/$1",
+      "^@restaurant/(.*)$":"<rootDir>/../src/restaurant/$1",
+      "^@user/(.*)$":"<rootDir>/../src/user/$1",
+      "^@jwt/(.*)$":"<rootDir>/../src/jwt/$1"
+    }
   },
   "packageManager": "yarn@3.2.0"
 }
