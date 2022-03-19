@@ -23,4 +23,12 @@ export class Restaurant extends CoreEntity {
   @Column({ unique: true }) // 한 계정당 하나만 등록 가능
   @IsNumber()
   owner_id: number;
+
+  @Column({ default: 1 }) // 1 is 기타
+  @IsNumber()
+  category_id: number;
+
+  @Column({ nullable: true })
+  @IsNumber()
+  sub_category_id?: number;
 }

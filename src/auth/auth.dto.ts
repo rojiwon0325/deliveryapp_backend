@@ -6,7 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Response } from 'express';
+import { CookieOptions, Response } from 'express';
 
 export class AuthPayload {
   @IsString()
@@ -35,4 +35,15 @@ export class PassportLoginDTO {
   @ValidateNested()
   payload: AuthPayload;
   res: Response;
+}
+
+export class LogoutDTO {
+  id: number;
+}
+
+export class LogoutCallbackDTO {
+  clearCookie: (
+    name: string,
+    options?: CookieOptions,
+  ) => Response<any, Record<string, any>>;
 }

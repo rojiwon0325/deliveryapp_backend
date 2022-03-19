@@ -8,6 +8,7 @@ import {
   ReadorCreateDTO,
   UpdateRole,
   UserPartial,
+  UserPassport,
 } from './user.dto';
 import { JwtPayload } from '@jwt/jwt.dto';
 import { CookieOptions } from 'express';
@@ -73,6 +74,25 @@ export class UserService {
       return this.userRepositry.findOne(
         { id },
         { select: ['email', 'username', 'role', 'id'] },
+      );
+    } catch {
+      return null;
+    }
+  }
+
+  async readPassportById({ id }: ByIdDTO): Promise<UserPassport | null> {
+    try {
+      return this.userRepositry.findOne(
+        { id },
+        {
+          select: [
+            'id',
+            'passport_type',
+            'passport_id',
+            'access_token',
+            'refresh_token',
+          ],
+        },
       );
     } catch {
       return null;

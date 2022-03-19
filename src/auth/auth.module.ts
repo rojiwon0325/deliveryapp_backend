@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
-import { PassportKakaoModule } from './passport-kakao/passport-kakao.module';
+import { HttpModule } from '@nestjs/axios';
+import { PassportKakaoModule } from './passport/passport-kakao/passport-kakao.module';
 import { Routes } from '@nestjs/core';
-import { PassportNaverModule } from './passport-naver/passport-naver.module';
+import { PassportNaverModule } from './passport/passport-naver/passport-naver.module';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
-  imports: [PassportKakaoModule, PassportNaverModule],
+  imports: [PassportKakaoModule, PassportNaverModule, HttpModule],
+  providers: [AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}
 

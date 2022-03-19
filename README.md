@@ -9,7 +9,10 @@
   - [x] kakao-login에서 유저 데이터 및 토큰 저장 => 로직 구체화할 것
         참고: https://developers.kakao.com/docs/latest/ko/kakaologin/common
 
-- [ ] 로그아웃 & 회원탈퇴 기능 추가
+- [ ] 로그아웃 & 회원탈퇴 기능 추가 -> 구현후에 test code 작성하기
+  - [ ] 인증 서버에서 토큰 만료 -> https/post를 반환하는 과정에서 cors문제 발생
+  - [ ] db에서 토큰 데이터 제거
+  - [x] jwt토큰 쿠키 제거 후 redirect
 
 - [x] 아임포트를 도입하여 결제 서비스 -> 실제 사업자가 아니면 제한이 많음, 생략
 - [ ] swagger 작성법 및 RESTAPI 공부
