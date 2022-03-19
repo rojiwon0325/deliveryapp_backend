@@ -28,5 +28,6 @@ jobs:
 
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        package-manager: yarn  
+        test-script: yarn jest --coverage
+        package-manager: yarn
         annotations: none
