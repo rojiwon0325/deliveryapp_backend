@@ -1,7 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateDTO } from './restaurant.dto';
+import {
+  ByIdDTO,
+  CreateDTO,
+  ListByIdDTO,
+  ListByNameDTO,
+  RestaurantListOutput,
+  UpdateRestaurantDTO,
+} from './restaurant.dto';
 import { Restaurant } from './restaurant.entity';
 
 @Injectable()
@@ -11,7 +18,11 @@ export class RestaurantService {
     private readonly restaurantRepositry: Repository<Restaurant>,
   ) {}
 
-  async createRestaurant({ sub_category_id, category_id, ...rest }: CreateDTO) {
+  async createRestaurant({
+    sub_category_id,
+    category_id,
+    ...rest
+  }: CreateDTO): Promise<Restaurant | null> {
     try {
       const prototype = this.restaurantRepositry.create({
         ...rest,
@@ -32,45 +43,98 @@ export class RestaurantService {
     }
   }
 
-  readRestaurantById() {
+  async readRestaurantById({ id }: ByIdDTO): Promise<Restaurant | null> {
     try {
+      const restaurant = await this.restaurantRepositry.findOneOrFail({
+        id,
+        activate: true,
+      });
+      return restaurant;
     } catch {
       return null;
     }
   }
 
-  readMyRestaurant() {
+  async readMyRestaurant({ id }: ByIdDTO): Promise<Restaurant | null> {
     try {
+      const restaurant = await this.restaurantRepositry.findOneOrFail({
+        owner_id: id,
+      });
+      return restaurant;
     } catch {
       return null;
     }
   }
 
-  readRestaurantListByCategoryId() {
+  async readRestaurantListByCategoryId({
+    id,
+    page,
+    size,
+  }: ListByIdDTO): Promise<RestaurantListOutput | null> {
     try {
+      const take = size ?? 10;
+      const [result, total] = await this.restaurantRepositry.findAndCount({
+        where: [
+          { category_id: id, activate: true },
+          { sub_category_id: id, activate: true },
+        ],
+        skip: take * (page ?? 1 - 1),
+        take,
+      });
+      return { result, total, page: page ?? 1 };
     } catch {
       return null;
     }
   }
 
-  readRestaurantListByName() {
+  async readRestaurantListByName({
+    name,
+    page,
+    size,
+  }: ListByNameDTO): Promise<RestaurantListOutput | null> {
     try {
+      const take = size ?? 10;
+      const [result, total] = await this.restaurantRepositry.findAndCount({
+        where: { name, activate: true },
+        skip: take * (page ?? 1 - 1),
+        take,
+      });
+      return { result, total, page: page ?? 1 };
     } catch {
       return null;
     }
   }
 
-  updateRestaurant() {
+  async updateRestaurant({
+    owner_id,
+    category_id,
+    sub_category_id,
+    ...rest
+  }: UpdateRestaurantDTO): Promise<Restaurant | null> {
     try {
+      const prototype = await this.restaurantRepositry.findOneOrFail({
+        owner_id,
+      });
+      if (category_id) prototype.category_id = category_id;
+      if (sub_category_id) prototype.sub_category_id = sub_category_id;
+      if (prototype.category_id === prototype.sub_category_id)
+        prototype.sub_category_id = null;
+      for (const [key, val] of Object.entries(rest)) {
+        prototype[key] = val;
+      }
+      const restaurant = await this.restaurantRepositry.save(prototype);
+      return restaurant;
     } catch {
       return null;
     }
   }
 
-  deleteRestaurant() {
+  async deleteRestaurant({ id }: ByIdDTO): Promise<boolean> {
     try {
+      await this.restaurantRepositry.delete({ owner_id: id });
+      return true;
     } catch {
-      return null;
+      return false;
     }
   }
 }
