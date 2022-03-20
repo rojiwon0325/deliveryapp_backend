@@ -33,26 +33,44 @@ export class RestaurantService {
   }
 
   readRestaurantById() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 
   readMyRestaurant() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 
   readRestaurantListByCategoryId() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 
   readRestaurantListByName() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 
   updateRestaurant() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 
   deleteRestaurant() {
-    return null;
+    try {
+    } catch {
+      return null;
+    }
   }
 }
