@@ -18,22 +18,17 @@ export class RestaurantService {
     private readonly restaurantRepositry: Repository<Restaurant>,
   ) {}
 
-  async createRestaurant({
-    sub_category_id,
-    category_id,
-    ...rest
-  }: CreateDTO): Promise<Restaurant | null> {
+  async createRestaurant(data: CreateDTO): Promise<Restaurant | null> {
     try {
-      const prototype = this.restaurantRepositry.create({
-        ...rest,
-      });
-      if (category_id) {
-        prototype.category_id = category_id;
-        if (category_id !== sub_category_id) {
-          prototype.sub_category_id = sub_category_id;
-        }
-      } else if (sub_category_id) {
-        prototype.category_id = sub_category_id;
+      const prototype = this.restaurantRepositry.create(data);
+      if (
+        prototype.category_id === null &&
+        prototype.sub_category_id !== null
+      ) {
+        prototype.category_id = prototype.sub_category_id;
+        prototype.sub_category_id = null;
+      } else if (prototype.category_id === prototype.sub_category_id) {
+        prototype.sub_category_id = null;
       }
       const restaurant = await this.restaurantRepositry.save(prototype);
 
@@ -68,20 +63,21 @@ export class RestaurantService {
 
   async readRestaurantListByCategoryId({
     id,
-    page,
+    page: prepage,
     size,
   }: ListByIdDTO): Promise<RestaurantListOutput | null> {
     try {
       const take = size ?? 10;
+      const page = prepage ?? 1 > 1 ? prepage - 1 : 0;
       const [result, total] = await this.restaurantRepositry.findAndCount({
         where: [
           { category_id: id, activate: true },
           { sub_category_id: id, activate: true },
         ],
-        skip: take * (page ?? 1 - 1),
+        skip: take * page,
         take,
       });
-      return { result, total, page: page ?? 1 };
+      return { result, total, page: page + 1 };
     } catch {
       return null;
     }
@@ -89,17 +85,18 @@ export class RestaurantService {
 
   async readRestaurantListByName({
     name,
-    page,
+    page: prepage,
     size,
   }: ListByNameDTO): Promise<RestaurantListOutput | null> {
     try {
       const take = size ?? 10;
+      const page = prepage ?? 1 > 1 ? prepage - 1 : 0;
       const [result, total] = await this.restaurantRepositry.findAndCount({
         where: { name, activate: true },
-        skip: take * (page ?? 1 - 1),
+        skip: take * page,
         take,
       });
-      return { result, total, page: page ?? 1 };
+      return { result, total, page: page + 1 };
     } catch {
       return null;
     }
