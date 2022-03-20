@@ -18,17 +18,22 @@ export class RestaurantService {
     private readonly restaurantRepositry: Repository<Restaurant>,
   ) {}
 
-  async createRestaurant(data: CreateDTO): Promise<Restaurant | null> {
+  async createRestaurant({
+    category_id,
+    sub_category_id,
+    ...rest
+  }: CreateDTO): Promise<Restaurant | null> {
     try {
-      const prototype = this.restaurantRepositry.create(data);
-      if (
-        prototype.category_id === null &&
-        prototype.sub_category_id !== null
-      ) {
-        prototype.category_id = prototype.sub_category_id;
-        prototype.sub_category_id = null;
-      } else if (prototype.category_id === prototype.sub_category_id) {
-        prototype.sub_category_id = null;
+      const prototype = this.restaurantRepositry.create({ ...rest });
+
+      if (category_id) {
+        prototype.category_id = category_id;
+        if (sub_category_id && category_id !== sub_category_id)
+          prototype.sub_category_id = sub_category_id;
+      } else if (sub_category_id) {
+        prototype.category_id = sub_category_id;
+      } else {
+        prototype.category_id = 1;
       }
       const restaurant = await this.restaurantRepositry.save(prototype);
 
@@ -104,18 +109,21 @@ export class RestaurantService {
 
   async updateRestaurant({
     owner_id,
-    category_id,
-    sub_category_id,
+    category_id, // 정상적인 값이 온다고 가정
+    sub_category_id, // 정상적인 값이 온다고 가정
     ...rest
   }: UpdateRestaurantDTO): Promise<Restaurant | null> {
     try {
       const prototype = await this.restaurantRepositry.findOneOrFail({
         owner_id,
       });
+
       if (category_id) prototype.category_id = category_id;
       if (sub_category_id) prototype.sub_category_id = sub_category_id;
+
       if (prototype.category_id === prototype.sub_category_id)
         prototype.sub_category_id = null;
+
       for (const [key, val] of Object.entries(rest)) {
         prototype[key] = val;
       }

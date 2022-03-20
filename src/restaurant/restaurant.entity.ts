@@ -1,5 +1,11 @@
 import { CoreEntity } from '@common/common.entity';
-import { IsBoolean, IsNumber, IsString, IsUrl } from 'class-validator';
+import {
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+} from 'class-validator';
 import { Column, Entity } from 'typeorm';
 
 @Entity()
@@ -22,10 +28,12 @@ export class Restaurant extends CoreEntity {
 
   @Column({ default: 1 }) // 1 is 기타
   @IsNumber()
-  category_id: number;
+  @IsOptional()
+  category_id?: number;
 
   @Column({ nullable: true })
   @IsNumber()
+  @IsOptional()
   sub_category_id?: number;
 
   @Column({ default: false })
