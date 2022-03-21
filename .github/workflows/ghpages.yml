@@ -17,6 +17,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - uses: actions/checkout@v2
     - run: yarn test:cov
     - uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
