@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MenuClass } from './entity/menu-class.entity';
-import { MenuOptionClass } from './entity/menu-option-class.entity';
-import { MenuOption } from './entity/menu-option.entity';
 import { Menu } from './entity/menu.entity';
 import { Restaurant } from '@restaurant/restaurant.entity';
 import { MenuController } from './menu.controller';
 import { MenuService } from './menu.service';
+import { MenuOption } from './entity/menu-option.entity';
+import { MenuOptionSelection } from './entity/menu-option-selection.entity';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { MenuService } from './menu.service';
       Menu,
       MenuClass,
       MenuOption,
-      MenuOptionClass,
+      MenuOptionSelection,
       Restaurant,
     ]),
   ],

@@ -14,7 +14,7 @@ import { MenuModule } from '@menu/menu.module';
 import { Menu } from '@menu/entity/menu.entity';
 import { MenuClass } from '@menu/entity/menu-class.entity';
 import { MenuOption } from '@menu/entity/menu-option.entity';
-import { MenuOptionClass } from '@menu/entity/menu-option-class.entity';
+import { MenuOptionSelection } from '@menu/entity/menu-option-selection.entity';
 
 @Module({
   imports: [
@@ -62,7 +62,7 @@ import { MenuOptionClass } from '@menu/entity/menu-option-class.entity';
         Menu,
         MenuClass,
         MenuOption,
-        MenuOptionClass,
+        MenuOptionSelection,
       ],
     }),
     AuthModule,

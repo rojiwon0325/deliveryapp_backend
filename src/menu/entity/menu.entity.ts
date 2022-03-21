@@ -2,13 +2,17 @@ import { CoreEntity } from '@common/common.entity';
 import { IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
 import { MenuClass } from './menu-class.entity';
-import { MenuOptionClass } from './menu-option-class.entity';
+import { MenuOption } from './menu-option.entity';
 
 @Entity()
 export class Menu extends CoreEntity {
   @Column()
   @IsString()
   name: string;
+
+  @Column()
+  @IsNumber()
+  owner_id: number;
 
   @Column()
   @IsUrl()
@@ -35,6 +39,6 @@ export class Menu extends CoreEntity {
   @RelationId((menu: Menu) => menu.menu_class)
   menu_class_id: number;
 
-  @OneToMany(() => MenuOptionClass, (optionclass) => optionclass.menu)
-  menu_option_class: MenuOptionClass[];
+  @OneToMany(() => MenuOption, (option) => option.menu)
+  menu_option: MenuOption[];
 }

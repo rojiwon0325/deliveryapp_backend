@@ -1,7 +1,8 @@
 import { CoreEntity } from '@common/common.entity';
-import { IsNumber, IsString } from 'class-validator';
-import { Column, Entity, ManyToOne, RelationId } from 'typeorm';
-import { MenuOptionClass } from './menu-option-class.entity';
+import { IsBoolean, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Column, Entity, ManyToOne, OneToMany, RelationId } from 'typeorm';
+import { MenuOptionSelection } from './menu-option-selection.entity';
+import { Menu } from './menu.entity';
 
 @Entity()
 export class MenuOption extends CoreEntity {
@@ -11,13 +12,23 @@ export class MenuOption extends CoreEntity {
 
   @Column()
   @IsNumber()
-  price: number;
+  owner_id: number;
 
-  @ManyToOne(() => MenuOptionClass, (optionclass) => optionclass.menu_option, {
+  @Column({ default: false })
+  @IsBoolean()
+  @IsOptional()
+  multiple?: boolean;
+
+  @ManyToOne(() => Menu, (menu) => menu.menu_option, {
     onDelete: 'CASCADE',
   })
-  menu_option_class: MenuOptionClass;
+  menu: Menu;
 
-  @RelationId((option: MenuOption) => option.menu_option_class)
-  menu_optin_class_id: number;
+  @RelationId((option: MenuOption) => option.menu)
+  menu_class_id: number;
+
+  @OneToMany(() => MenuOptionSelection, (selection) => selection.menu_option, {
+    eager: true,
+  })
+  menu_option_selection: MenuOptionSelection[];
 }

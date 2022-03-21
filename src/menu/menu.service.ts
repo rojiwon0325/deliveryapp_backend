@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from '@restaurant/restaurant.entity';
 import { Repository } from 'typeorm';
 import { MenuClass } from './entity/menu-class.entity';
-import { MenuOptionClass } from './entity/menu-option-class.entity';
+import { MenuOptionSelection } from './entity/menu-option-selection.entity';
 import { MenuOption } from './entity/menu-option.entity';
 import { Menu } from './entity/menu.entity';
 
@@ -15,9 +15,9 @@ export class MenuService {
     @InjectRepository(MenuClass)
     private readonly menuClassRepositry: Repository<MenuClass>,
     @InjectRepository(MenuOption)
-    private readonly menuOptionRepositry: Repository<MenuOption>,
-    @InjectRepository(MenuOptionClass)
-    private readonly menuOptionClassRepositry: Repository<MenuOptionClass>,
+    private readonly optionRepositry: Repository<MenuOption>,
+    @InjectRepository(MenuOptionSelection)
+    private readonly selectionRepositry: Repository<MenuOptionSelection>,
     @InjectRepository(Restaurant)
     private readonly restaurantRepository: Repository<Restaurant>,
   ) {}
@@ -63,6 +63,7 @@ export class MenuService {
           description,
           cover_image,
           menu_class,
+          owner_id,
         }),
       );
       return menu;
@@ -71,10 +72,10 @@ export class MenuService {
     }
   }
 
-  async createMenuOptionClass() {
+  async createMenuOption() {
     return null;
   }
-  async createMenuOption() {
+  async createMenuOptionSelection() {
     return null;
   }
 
@@ -115,13 +116,6 @@ export class MenuService {
     }
   }
 
-  async updateMenuOptionClass() {
-    try {
-    } catch {
-      return null;
-    }
-  }
-
   async updateMenuOption() {
     try {
     } catch {
@@ -129,31 +123,59 @@ export class MenuService {
     }
   }
 
-  async deleteMenuClass() {
+  async updateMenuOptionSelection() {
     try {
     } catch {
       return null;
     }
   }
 
-  async deleteMenu() {
+  async deleteMenuClass({ owner_id, menu_class_id }) {
     try {
+      const restaurant_id = await this.findMyRestaurantId({ owner_id });
+      await this.menuClassRepositry.delete({
+        id: menu_class_id,
+        restaurant_id,
+      });
+      return true;
     } catch {
-      return null;
+      return false;
     }
   }
 
-  async deleteMenuOptionClass() {
+  async deleteMenu({ owner_id, menu_id }) {
     try {
+      await this.menuRepositry.delete({
+        id: menu_id,
+        owner_id,
+      });
+      return true;
     } catch {
-      return null;
+      return false;
     }
   }
 
-  async deleteMenuOption() {
+  async deleteMenuOption({ owner_id, option_id }) {
     try {
+      await this.optionRepositry.delete({
+        id: option_id,
+        owner_id,
+      });
+      return true;
     } catch {
-      return null;
+      return false;
+    }
+  }
+
+  async deleteMenuOptionSelection({ owner_id, selection_id }) {
+    try {
+      await this.selectionRepositry.delete({
+        id: selection_id,
+        owner_id,
+      });
+      return true;
+    } catch {
+      return false;
     }
   }
 }
