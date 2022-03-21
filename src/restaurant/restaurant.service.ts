@@ -25,7 +25,6 @@ export class RestaurantService {
   }: CreateDTO): Promise<Restaurant | null> {
     try {
       const prototype = this.restaurantRepositry.create({ ...rest });
-
       if (category_id) {
         prototype.category_id = category_id;
         if (sub_category_id && category_id !== sub_category_id) {
