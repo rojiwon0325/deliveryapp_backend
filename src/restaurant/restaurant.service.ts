@@ -28,8 +28,9 @@ export class RestaurantService {
 
       if (category_id) {
         prototype.category_id = category_id;
-        if (sub_category_id && category_id !== sub_category_id)
+        if (sub_category_id && category_id !== sub_category_id) {
           prototype.sub_category_id = sub_category_id;
+        }
       } else if (sub_category_id) {
         prototype.category_id = sub_category_id;
       } else {

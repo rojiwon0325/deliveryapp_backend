@@ -36,13 +36,13 @@ describe('RestaurantService', () => {
   });
 
   describe('createRestaurant', () => {
+    const data = {
+      owner_id: 1,
+      name: 'testname',
+      brand_image: 'test_image',
+      background_image: 'test_background',
+    };
     it('카테고리 지정없이 생성', async () => {
-      const data = {
-        owner_id: 1,
-        name: 'testname',
-        brand_image: 'test_image',
-        background_image: 'test_background',
-      };
       repository.create.mockReturnValue(data);
       repository.save.mockResolvedValue({ ...data, category_id: 1 });
 
@@ -51,22 +51,58 @@ describe('RestaurantService', () => {
       expect(repository.save).toHaveBeenCalledWith({ ...data, category_id: 1 });
     });
     it('메인 카테고리만 지정하고 생성', async () => {
-      // 'pass'
+      const category_id = 10;
+      repository.create.mockReturnValue(data);
+      repository.save.mockResolvedValue({ ...data, category_id });
+
+      const result = await service.createRestaurant({ ...data, category_id });
+      expect(result).toEqual({ ...data, category_id });
+      expect(repository.save).toHaveBeenCalledWith({ ...data, category_id });
     });
     it('서브 카테고리만 지정하고 생성', async () => {
-      // 'pass'
+      const sub = 10;
+      repository.create.mockReturnValue(data);
+      repository.save.mockResolvedValue({ ...data, category_id: sub });
+
+      const result = await service.createRestaurant({
+        ...data,
+        sub_category_id: sub,
+      });
+      expect(result).toEqual({ ...data, category_id: sub });
+      expect(repository.save).toHaveBeenCalledWith({
+        ...data,
+        category_id: sub,
+      });
     });
     it('두 카테고리가 동일하게 지정하고 생성', async () => {
-      // 'pass'
+      const category_id = 10;
+      const sub_category_id = 10;
+      repository.create.mockReturnValue(data);
+      repository.save.mockResolvedValue({ ...data, category_id });
+
+      const result = await service.createRestaurant({
+        ...data,
+        category_id,
+        sub_category_id,
+      });
+      expect(result).toEqual({ ...data, category_id });
+      expect(repository.save).toHaveBeenCalledWith({ ...data, category_id });
     });
     it('두 카테고리가 다르게 지정하고 생성', async () => {
-      // 'pass'
+      const category = { category_id: 10, sub_category_id: 15 };
+      repository.create.mockReturnValue(data);
+      repository.save.mockResolvedValue({ ...data, ...category });
+
+      const result = await service.createRestaurant({ ...data, ...category });
+      expect(result).toEqual({ ...data, ...category });
+      expect(repository.save).toHaveBeenCalledWith({ ...data, ...category });
     });
-    it('이미 식당을 소유한 경우', async () => {
-      // 'pass'
-    });
-    it('예기치 못한 에러', async () => {
-      // 'pass'
+    it('이미 식당을 소유한 경우 또는 예기치 못한 에러', async () => {
+      repository.create.mockReturnValue(data);
+      repository.save.mockRejectedValue(new Error());
+
+      const result = await service.createRestaurant(data);
+      expect(result).toEqual(null);
     });
   });
   describe('readRestaurantById', () => {
