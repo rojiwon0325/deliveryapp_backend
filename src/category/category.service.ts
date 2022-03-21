@@ -26,7 +26,7 @@ export class CategoryService {
       const list = await this.categoryRepositry.find();
       return list;
     } catch {
-      return [];
+      return null;
     }
   }
   async updateById({ id, name, cover_image }: UpdateDTO) {
