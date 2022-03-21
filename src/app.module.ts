@@ -15,6 +15,8 @@ import { Menu } from '@menu/entity/menu.entity';
 import { MenuClass } from '@menu/entity/menu-class.entity';
 import { MenuOption } from '@menu/entity/menu-option.entity';
 import { MenuOptionSelection } from '@menu/entity/menu-option-selection.entity';
+import { CategoryModule } from './category/category.module';
+import { Category } from './category/category.entity';
 
 @Module({
   imports: [
@@ -63,6 +65,7 @@ import { MenuOptionSelection } from '@menu/entity/menu-option-selection.entity';
         MenuClass,
         MenuOption,
         MenuOptionSelection,
+        Category,
       ],
     }),
     AuthModule,
@@ -78,6 +81,7 @@ import { MenuOptionSelection } from '@menu/entity/menu-option-selection.entity';
     ]),
     RestaurantModule,
     MenuModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
