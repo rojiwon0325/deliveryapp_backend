@@ -9,6 +9,7 @@
     "^src/(.*)$":"<rootDir>/../src/$1",
     "^@auth/(.*)$":"<rootDir>/../src/auth/$1",
     "^@common/(.*)$":"<rootDir>/../src/common/$1",
+    "^@menu/(.*)$":"<rootDir>/../src/menu/$1",
     "^@mail/(.*)$":"<rootDir>/../src/mail/$1",
     "^@restaurant/(.*)$":"<rootDir>/../src/restaurant/$1",
     "^@user/(.*)$":"<rootDir>/../src/user/$1",
