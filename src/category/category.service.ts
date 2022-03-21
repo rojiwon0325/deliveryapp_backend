@@ -21,7 +21,7 @@ export class CategoryService {
       return null;
     }
   }
-  async readyAll() {
+  async readAll() {
     try {
       const list = await this.categoryRepositry.find();
       return list;
