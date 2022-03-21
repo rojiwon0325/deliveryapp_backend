@@ -1,12 +1,11 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Unit Test by Jest
+name: Coverage Report
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
+    branches: [ main ]
     
 jobs:
   coverage:
@@ -18,11 +17,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: ArtiomTr/jest-coverage-report-action@v2.0.5
+    - uses: yarn test:cov
+    - uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        test-script: yarn jest
-        package-manager: yarn
-        skip-step: install
-        annotations: none
+        branch: gh-pages
+        folder: coverage/lcov-report
