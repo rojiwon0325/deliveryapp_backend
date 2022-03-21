@@ -17,7 +17,11 @@
 
 - [x] 아임포트를 도입하여 결제 서비스 -> 실제 사업자가 아니면 제한이 많음, 생략
 - [ ] swagger 작성법 및 RESTAPI 공부
+
   - [x] swagger 모듈 설치
+
+- [ ] github action
+  - [ ] git flow 전략을 사용한 개발 branch 분리
 
 ## To Do List - 미숙한 것들
 
