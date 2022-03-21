@@ -17,7 +17,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: yarn test:cov
+    - run: yarn test:cov
     - uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
         branch: gh-pages
