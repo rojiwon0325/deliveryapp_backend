@@ -6,6 +6,17 @@ import { MenuClass } from './entity/menu-class.entity';
 import { MenuOptionSelection } from './entity/menu-option-selection.entity';
 import { MenuOption } from './entity/menu-option.entity';
 import { Menu } from './entity/menu.entity';
+import {
+  ByIdDTO,
+  ByOwnerIdDTO,
+  ByRestaurantId,
+  CreateMenuClassDTO,
+  CreateMenuDTO,
+  MenuClassSelector,
+  MenuOptionSelectionSelector,
+  MenuOptionSelector,
+  MenuSelector,
+} from './menu.dto';
 
 @Injectable()
 export class MenuService {
@@ -22,7 +33,7 @@ export class MenuService {
     private readonly restaurantRepository: Repository<Restaurant>,
   ) {}
 
-  async findMyRestaurantId({ owner_id }) {
+  async findMyRestaurantId({ owner_id }: ByOwnerIdDTO): Promise<number> {
     try {
       const { id } = await this.restaurantRepository.findOneOrFail(
         { owner_id },
@@ -34,7 +45,10 @@ export class MenuService {
     }
   }
 
-  async createMenuClass({ owner_id, name }) {
+  async createMenuClass({
+    owner_id,
+    name,
+  }: CreateMenuClassDTO): Promise<MenuClass | null> {
     try {
       const restaurant_id = await this.findMyRestaurantId({ owner_id });
       const menuclass = await this.menuClassRepositry.save(
@@ -45,10 +59,10 @@ export class MenuService {
       return null;
     }
   }
-  async createMenu(
-    { owner_id, menu_class_id },
-    { name, price, price_name, description, cover_image },
-  ) {
+  async createMenu({
+    selector: { owner_id, menu_class_id },
+    data: { name, price, price_name, description, cover_image },
+  }: CreateMenuDTO): Promise<Menu | null> {
     try {
       const restaurant_id = await this.findMyRestaurantId({ owner_id });
       const menu_class = await this.menuClassRepositry.findOneOrFail({
@@ -79,7 +93,9 @@ export class MenuService {
     return null;
   }
 
-  async readyAllMenuClassByRestaurantId({ restaurant_id }) {
+  async readyAllMenuClassByRestaurantId({
+    restaurant_id,
+  }: ByRestaurantId): Promise<MenuClass[] | null> {
     try {
       const menuclass_list = await this.menuClassRepositry.find({
         restaurant_id,
@@ -90,7 +106,7 @@ export class MenuService {
     }
   }
 
-  async readyMenuById({ id }) {
+  async readyMenuById({ id }: ByIdDTO): Promise<Menu | null> {
     try {
       const menu = await this.menuRepositry.findOne(
         { id },
@@ -130,7 +146,10 @@ export class MenuService {
     }
   }
 
-  async deleteMenuClass({ owner_id, menu_class_id }) {
+  async deleteMenuClass({
+    owner_id,
+    menu_class_id,
+  }: MenuClassSelector): Promise<boolean> {
     try {
       const restaurant_id = await this.findMyRestaurantId({ owner_id });
       await this.menuClassRepositry.delete({
@@ -143,7 +162,7 @@ export class MenuService {
     }
   }
 
-  async deleteMenu({ owner_id, menu_id }) {
+  async deleteMenu({ owner_id, menu_id }: MenuSelector): Promise<boolean> {
     try {
       await this.menuRepositry.delete({
         id: menu_id,
@@ -155,7 +174,10 @@ export class MenuService {
     }
   }
 
-  async deleteMenuOption({ owner_id, option_id }) {
+  async deleteMenuOption({
+    owner_id,
+    option_id,
+  }: MenuOptionSelector): Promise<boolean> {
     try {
       await this.optionRepositry.delete({
         id: option_id,
@@ -167,7 +189,10 @@ export class MenuService {
     }
   }
 
-  async deleteMenuOptionSelection({ owner_id, selection_id }) {
+  async deleteMenuOptionSelection({
+    owner_id,
+    selection_id,
+  }: MenuOptionSelectionSelector): Promise<boolean> {
     try {
       await this.selectionRepositry.delete({
         id: selection_id,

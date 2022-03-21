@@ -55,7 +55,18 @@ describe('MenuService', () => {
   });
 
   describe('findMyRestaurantId', () => {
-    // pass
+    it('식당 정보 조회', async () => {
+      restaurantRepository.findOneOrFail.mockResolvedValue({ id: 10 });
+      const result = await service.findMyRestaurantId({ owner_id: 1 });
+      expect(result).toEqual(10);
+    });
+    it('식당 정보 실패', async () => {
+      restaurantRepository.findOneOrFail.mockRejectedValue(
+        new Error('test error'),
+      );
+      const result = await service.findMyRestaurantId({ owner_id: 1 });
+      expect(result).toEqual(new Error('test error'));
+    });
   });
   describe('createMenuClass', () => {
     // pass

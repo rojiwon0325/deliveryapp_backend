@@ -11,7 +11,7 @@ export class CategoryService {
     private readonly categoryRepositry: Repository<Category>,
   ) {}
 
-  async create({ name, cover_image }: CreateDTO) {
+  async create({ name, cover_image }: CreateDTO): Promise<Category | null> {
     try {
       const category = await this.categoryRepositry.save(
         this.categoryRepositry.create({ name, cover_image }),
@@ -21,7 +21,7 @@ export class CategoryService {
       return null;
     }
   }
-  async readAll() {
+  async readAll(): Promise<Category[] | null> {
     try {
       const list = await this.categoryRepositry.find();
       return list;
@@ -29,7 +29,11 @@ export class CategoryService {
       return null;
     }
   }
-  async updateById({ id, name, cover_image }: UpdateDTO) {
+  async updateById({
+    id,
+    name,
+    cover_image,
+  }: UpdateDTO): Promise<Category | null> {
     try {
       const prototype = await this.categoryRepositry.findOneOrFail({ id });
       if (name) {
@@ -44,7 +48,7 @@ export class CategoryService {
       return null;
     }
   }
-  async deleteById({ id }: ByIdDTO) {
+  async deleteById({ id }: ByIdDTO): Promise<boolean> {
     try {
       await this.categoryRepositry.delete({ id });
       return true;
