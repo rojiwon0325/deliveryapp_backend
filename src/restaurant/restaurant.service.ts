@@ -73,7 +73,7 @@ export class RestaurantService {
   }: ListByIdDTO): Promise<RestaurantListOutput | null> {
     try {
       const take = size ?? 10;
-      const page = prepage ?? 1 > 1 ? prepage - 1 : 0;
+      const page = (prepage ?? 1) > 1 ? prepage - 1 : 0;
       const [result, total] = await this.restaurantRepositry.findAndCount({
         where: [
           { category_id: id, activate: true },
@@ -95,7 +95,7 @@ export class RestaurantService {
   }: ListByNameDTO): Promise<RestaurantListOutput | null> {
     try {
       const take = size ?? 10;
-      const page = prepage ?? 1 > 1 ? prepage - 1 : 0;
+      const page = (prepage ?? 1) > 1 ? prepage - 1 : 0;
       const [result, total] = await this.restaurantRepositry.findAndCount({
         where: { name, activate: true },
         skip: take * page,
@@ -109,8 +109,8 @@ export class RestaurantService {
 
   async updateMyRestaurant({
     owner_id,
-    category_id, // 정상적인 값이 온다고 가정
-    sub_category_id, // 정상적인 값이 온다고 가정
+    category_id, // 존재하는 id가 온다고 가정
+    sub_category_id, // 존재하는 id가 온다고 가정
     ...rest
   }: UpdateRestaurantDTO): Promise<Restaurant | null> {
     try {

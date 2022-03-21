@@ -111,60 +111,238 @@ describe('RestaurantService', () => {
   describe('readById', () => {
     const arg = { id: 1 };
     it('식당 정보 조회 성공', async () => {
-      repository.findOneOrFail.mockResolvedValue({ ...arg, active: true });
+      repository.findOneOrFail.mockResolvedValue(arg);
+      const result = await service.readById(arg);
+      expect(result).toEqual(arg);
     });
     it('식당 정보 조회 실패', async () => {
-      // 'pass'
+      repository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.readById(arg);
+      expect(result).toEqual(null);
+    });
+  });
+  describe('readByOwnerId', () => {
+    const arg = { id: 1 };
+    it('식당 정보 조회 성공', async () => {
+      repository.findOneOrFail.mockResolvedValue(arg);
+      const result = await service.readByOwnerId(arg);
+      expect(result).toEqual(arg);
+    });
+    it('식당 정보 조회 실패', async () => {
+      repository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.readByOwnerId(arg);
+      expect(result).toEqual(null);
     });
   });
   describe('readRestaurantListByCategoryId', () => {
     it('식당 정보 조회 성공', async () => {
-      // 'pass'
+      const arg = { id: 1, page: 2, size: 10 };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByCategoryId(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 2,
+      });
+    });
+    it('page, size 생략', async () => {
+      const arg = { id: 1 };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByCategoryId(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 1,
+      });
     });
     it('잘못된 범위의 페이지 요청', async () => {
-      // 'pass'
+      const arg = { id: 1, page: -2, size: 10 };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByCategoryId(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 1,
+      });
     });
     it('식당 정보 조회 실패', async () => {
-      // 'pass'
+      const arg = { id: 1, page: 2, size: 10 };
+      repository.findAndCount.mockRejectedValue(new Error());
+      const result = await service.readRestaurantListByCategoryId(arg);
+      expect(result).toEqual(null);
     });
   });
   describe('readRestaurantListByName', () => {
     it('식당 리스트 조회 성공', async () => {
-      // 'pass'
+      const arg = { name: 'testname', page: 2, size: 10 };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByName(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 2,
+      });
+    });
+    it('page, size 생략', async () => {
+      const arg = { name: 'testname' };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByName(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 1,
+      });
     });
     it('잘못된 범위의 페이지 요청', async () => {
-      // 'pass'
+      const arg = { name: 'testname', page: -2, size: 10 };
+      const data = [[], 100];
+      repository.findAndCount.mockResolvedValue(data);
+      const result = await service.readRestaurantListByName(arg);
+      expect(result).toEqual({
+        result: data[0],
+        total: data[1],
+        page: 1,
+      });
     });
     it('식당 리스트 조회 실패', async () => {
-      // 'pass'
+      const arg = { name: 'testname', page: 2, size: 10 };
+      repository.findAndCount.mockRejectedValue(new Error());
+      const result = await service.readRestaurantListByName(arg);
+      expect(result).toEqual(null);
     });
   });
   describe('updateMyRestaurant', () => {
-    it('식당 정보 조회 실패', async () => {
-      // 'pass'
+    it('서로 다른 카테고리 변경', async () => {
+      const arg = {
+        id: 1,
+        owner_id: 10,
+        name: 'new',
+        category_id: 5,
+        sub_category_id: 6,
+      };
+      repository.findOneOrFail.mockResolvedValue({
+        ...arg,
+        name: 'old',
+        category_id: 1,
+        sub_category_id: null,
+      });
+      repository.save.mockResolvedValue({ ...arg });
+
+      const result = await service.updateMyRestaurant({ ...arg });
+      expect(result).toEqual({
+        ...arg,
+      });
+      expect(repository.save).toHaveBeenCalledWith({
+        ...arg,
+      });
     });
-    it('다른 카테고리 변경', async () => {
-      // 'pass'
-    });
-    it('동일한 카테고리 변경', async () => {
-      // 'pass'
+    it('서로 동일한 카테고리 변경', async () => {
+      const arg = {
+        id: 1,
+        owner_id: 10,
+        name: 'new',
+        category_id: 5,
+        sub_category_id: 5,
+      };
+      repository.findOneOrFail.mockResolvedValue({
+        ...arg,
+        name: 'old',
+        category_id: 1,
+        sub_category_id: null,
+      });
+      repository.save.mockResolvedValue({ ...arg, sub_category_id: null });
+
+      const result = await service.updateMyRestaurant({ ...arg });
+      expect(result).toEqual({ ...arg, sub_category_id: null });
+      expect(repository.save).toHaveBeenCalledWith({
+        ...arg,
+        sub_category_id: null,
+      });
     });
     it('서브 카테고리 변경후 메인 카테고리와 중복', async () => {
-      // 'pass'
+      const arg = {
+        id: 1,
+        owner_id: 10,
+        name: 'new',
+        sub_category_id: 5,
+      };
+      repository.findOneOrFail.mockResolvedValue({
+        ...arg,
+        name: 'old',
+        category_id: 5,
+        sub_category_id: null,
+      });
+      repository.save.mockResolvedValue({
+        ...arg,
+        category_id: 5,
+        sub_category_id: null,
+      });
+
+      const result = await service.updateMyRestaurant({ ...arg });
+      expect(result).toEqual({ ...arg, category_id: 5, sub_category_id: null });
+      expect(repository.save).toHaveBeenCalledWith({
+        ...arg,
+        category_id: 5,
+        sub_category_id: null,
+      });
     });
-    it('식당 정보 변경', async () => {
-      // 'pass'
+    it('카테고리 변경 없이 식당 정보 변경', async () => {
+      const arg = {
+        id: 1,
+        owner_id: 10,
+        name: 'new',
+      };
+      repository.findOneOrFail.mockResolvedValue({
+        ...arg,
+        name: 'old',
+        category_id: 1,
+        sub_category_id: 2,
+      });
+      repository.save.mockResolvedValue({
+        ...arg,
+        category_id: 1,
+        sub_category_id: 2,
+      });
+
+      const result = await service.updateMyRestaurant({
+        ...arg,
+      });
+      expect(result).toEqual({ ...arg, category_id: 1, sub_category_id: 2 });
+      expect(repository.save).toHaveBeenCalledWith({
+        ...arg,
+        category_id: 1,
+        sub_category_id: 2,
+      });
     });
-    it('예기치 못한 에러', async () => {
-      // 'pass'
+    it('식당 정보 조회 실패 및 예기치 못한 에러', async () => {
+      const arg = {
+        id: 1,
+        owner_id: 10,
+        name: 'new',
+      };
+      repository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.updateMyRestaurant({ ...arg });
+      expect(result).toEqual(null);
+      expect(repository.save).toHaveBeenCalledTimes(0);
     });
   });
   describe('deleteById', () => {
     it('delete메소드 정상 실행', async () => {
-      // 'pass'
+      const arg = { id: 1 };
+      repository.delete.mockResolvedValue(arg);
+      const result = await service.deleteById(arg);
+      expect(result).toEqual(true);
     });
     it('delete메소드 실패', async () => {
-      // 'pass'
+      const arg = { id: 1 };
+      repository.delete.mockRejectedValue(new Error());
+      const result = await service.deleteById(arg);
+      expect(result).toEqual(false);
     });
   });
 });
