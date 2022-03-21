@@ -35,7 +35,7 @@ describe('RestaurantService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('createRestaurant', () => {
+  describe('createMyRestaurant', () => {
     const data = {
       owner_id: 1,
       name: 'testname',
@@ -46,7 +46,7 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockResolvedValue({ ...data, category_id: 1 });
 
-      const result = await service.createRestaurant({ ...data });
+      const result = await service.createMyRestaurant({ ...data });
       expect(result).toEqual({ ...data, category_id: 1 });
       expect(repository.save).toHaveBeenCalledWith({ ...data, category_id: 1 });
     });
@@ -55,7 +55,7 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockResolvedValue({ ...data, category_id });
 
-      const result = await service.createRestaurant({ ...data, category_id });
+      const result = await service.createMyRestaurant({ ...data, category_id });
       expect(result).toEqual({ ...data, category_id });
       expect(repository.save).toHaveBeenCalledWith({ ...data, category_id });
     });
@@ -64,7 +64,7 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockResolvedValue({ ...data, category_id: sub });
 
-      const result = await service.createRestaurant({
+      const result = await service.createMyRestaurant({
         ...data,
         sub_category_id: sub,
       });
@@ -83,7 +83,7 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockResolvedValue({ ...data, category_id });
 
-      const result = await service.createRestaurant({
+      const result = await service.createMyRestaurant({
         ...data,
         category_id,
         sub_category_id,
@@ -96,7 +96,7 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockResolvedValue({ ...data, ...category });
 
-      const result = await service.createRestaurant({ ...data, ...category });
+      const result = await service.createMyRestaurant({ ...data, ...category });
       expect(result).toEqual({ ...data, ...category });
       expect(repository.save).toHaveBeenCalledWith({ ...data, ...category });
     });
@@ -104,13 +104,14 @@ describe('RestaurantService', () => {
       repository.create.mockReturnValue({ ...data });
       repository.save.mockRejectedValue(new Error());
 
-      const result = await service.createRestaurant({ ...data });
+      const result = await service.createMyRestaurant({ ...data });
       expect(result).toEqual(null);
     });
   });
-  describe('readRestaurantById', () => {
+  describe('readById', () => {
+    const arg = { id: 1 };
     it('식당 정보 조회 성공', async () => {
-      // 'pass'
+      repository.findOneOrFail.mockResolvedValue({ ...arg, active: true });
     });
     it('식당 정보 조회 실패', async () => {
       // 'pass'
@@ -138,7 +139,7 @@ describe('RestaurantService', () => {
       // 'pass'
     });
   });
-  describe('updateRestaurant', () => {
+  describe('updateMyRestaurant', () => {
     it('식당 정보 조회 실패', async () => {
       // 'pass'
     });
@@ -158,7 +159,7 @@ describe('RestaurantService', () => {
       // 'pass'
     });
   });
-  describe('deleteRestaurant', () => {
+  describe('deleteById', () => {
     it('delete메소드 정상 실행', async () => {
       // 'pass'
     });

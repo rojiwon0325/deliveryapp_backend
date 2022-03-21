@@ -18,7 +18,7 @@ export class RestaurantService {
     private readonly restaurantRepositry: Repository<Restaurant>,
   ) {}
 
-  async createRestaurant({
+  async createMyRestaurant({
     category_id,
     sub_category_id,
     ...rest
@@ -43,7 +43,7 @@ export class RestaurantService {
     }
   }
 
-  async readRestaurantById({ id }: ByIdDTO): Promise<Restaurant | null> {
+  async readById({ id }: ByIdDTO): Promise<Restaurant | null> {
     try {
       const restaurant = await this.restaurantRepositry.findOneOrFail({
         id,
@@ -55,7 +55,7 @@ export class RestaurantService {
     }
   }
 
-  async readMyRestaurant({ id }: ByIdDTO): Promise<Restaurant | null> {
+  async readByOwnerId({ id }: ByIdDTO): Promise<Restaurant | null> {
     try {
       const restaurant = await this.restaurantRepositry.findOneOrFail({
         owner_id: id,
@@ -107,7 +107,7 @@ export class RestaurantService {
     }
   }
 
-  async updateRestaurant({
+  async updateMyRestaurant({
     owner_id,
     category_id, // 정상적인 값이 온다고 가정
     sub_category_id, // 정상적인 값이 온다고 가정
@@ -134,7 +134,7 @@ export class RestaurantService {
     }
   }
 
-  async deleteRestaurant({ id }: ByIdDTO): Promise<boolean> {
+  async deleteById({ id }: ByIdDTO): Promise<boolean> {
     try {
       await this.restaurantRepositry.delete({ owner_id: id });
       return true;

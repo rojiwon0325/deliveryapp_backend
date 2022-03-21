@@ -231,7 +231,7 @@ describe('UserService', () => {
     });
     it('사용자 role 업데이트', async () => {
       const arg = { id: 1, role: UserRole.Customer };
-      repository.findOneOrFail.mockResolvedValue(mockedUser);
+      repository.findOneOrFail.mockResolvedValue({ ...mockedUser });
       repository.save.mockResolvedValue({ ...mockedUser, ...arg });
       const result = await service.updateRole(arg, mockedcb);
       expect(result).toEqual({ ...mockedUser, ...arg });
