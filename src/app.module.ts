@@ -12,6 +12,7 @@ import { Restaurant } from '@restaurant/restaurant.entity';
 import { RestaurantModule } from '@restaurant/restaurant.module';
 import { MenuModule } from '@menu/menu.module';
 import { Menu } from '@menu/menu.entity';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { Menu } from '@menu/menu.entity';
     ]),
     RestaurantModule,
     MenuModule,
+    CategoryModule,
   ],
 })
 export class AppModule {}
