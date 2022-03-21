@@ -11,7 +11,10 @@ import { UserModule } from '@user/user.module';
 import { Restaurant } from '@restaurant/restaurant.entity';
 import { RestaurantModule } from '@restaurant/restaurant.module';
 import { MenuModule } from '@menu/menu.module';
-import { Menu } from '@menu/menu.entity';
+import { Menu } from '@menu/entity/menu.entity';
+import { MenuClass } from '@menu/entity/menu-class.entity';
+import { MenuOption } from '@menu/entity/menu-option.entity';
+import { MenuOptionClass } from '@menu/entity/menu-option-class.entity';
 
 @Module({
   imports: [
@@ -53,7 +56,14 @@ import { Menu } from '@menu/menu.entity';
       database: process.env.DB_DATABASE,
       synchronize: true,
       logging: false,
-      entities: [User, Restaurant, Menu],
+      entities: [
+        User,
+        Restaurant,
+        Menu,
+        MenuClass,
+        MenuOption,
+        MenuOptionClass,
+      ],
     }),
     AuthModule,
     JwtModule,

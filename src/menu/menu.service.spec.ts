@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Restaurant } from '@restaurant/restaurant.entity';
 import { Repository } from 'typeorm';
-import { Menu } from './menu.entity';
+import { Menu } from './entity/menu.entity';
 import { MenuService } from './menu.service';
 
 const mockRepository = () => ({
