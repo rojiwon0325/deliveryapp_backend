@@ -9,6 +9,7 @@ import { Menu } from './entity/menu.entity';
 import { MenuService } from './menu.service';
 
 const mockRepository = () => ({
+  find: jest.fn(),
   findOne: jest.fn(),
   findAndCount: jest.fn(),
   findOneOrFail: jest.fn(),
@@ -64,24 +65,140 @@ describe('MenuService', () => {
       restaurantRepository.findOneOrFail.mockRejectedValue(
         new Error('test error'),
       );
-      const result = await service.findMyRestaurantId({ owner_id: 1 });
-      expect(result).toEqual(new Error('test error'));
+      try {
+        await service.findMyRestaurantId({ owner_id: 1 });
+        expect(true).toBe(false); // 실행되면 무조건 실패
+      } catch (error) {
+        expect(error).toEqual(new Error('Restaurant Not Found'));
+      }
     });
   });
   describe('createMenuClass', () => {
-    // pass
+    it('식당 조회 실패', async () => {
+      jest.spyOn(service, 'findMyRestaurantId').mockRejectedValue(new Error());
+      const result = await service.createMenuClass({
+        owner_id: 10,
+        name: 'test',
+      });
+      expect(result).toEqual(null);
+      expect(menuClassRepository.save).toHaveBeenCalledTimes(0);
+    });
+    it('메뉴 클래스 생성', async () => {
+      jest.spyOn(service, 'findMyRestaurantId').mockResolvedValue(1);
+      menuClassRepository.create.mockReturnValue({
+        name: 'test',
+        restaurant_id: 1,
+      });
+      menuClassRepository.save.mockResolvedValue({
+        name: 'test',
+        restaurant_id: 1,
+      });
+      const result = await service.createMenuClass({
+        owner_id: 10,
+        name: 'test',
+      });
+      expect(result).toEqual({
+        name: 'test',
+        restaurant_id: 1,
+      });
+    });
+    it('예기치 못한 에러', async () => {
+      jest.spyOn(service, 'findMyRestaurantId').mockResolvedValue(1);
+      menuClassRepository.create.mockReturnValue({
+        name: 'test',
+        restaurant_id: 1,
+      });
+      menuClassRepository.save.mockRejectedValue(new Error());
+      const result = await service.createMenuClass({
+        owner_id: 10,
+        name: 'test',
+      });
+      expect(result).toEqual(null);
+    });
   });
+  const mockFn = () =>
+    jest.spyOn(service, 'findMyRestaurantId').mockResolvedValue(1);
   describe('createMenu', () => {
-    // pass
+    const arg = {
+      selector: { owner_id: 1, menu_class_id: 2 },
+      data: {
+        name: 'testmenu',
+        price: 1000,
+        description: '',
+        cover_image: '',
+      },
+    };
+    it('메뉴 클래스 조회 실패', async () => {
+      mockFn();
+      menuClassRepository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.createMenu(arg);
+      expect(result).toEqual(null);
+      expect(menuRepository.save).toHaveBeenCalledTimes(0);
+    });
+    it('메뉴 생성', async () => {
+      const menu = {
+        ...arg.data,
+        owner_id: arg.selector.owner_id,
+        menu_class: { name: 'testmenuclass' },
+      };
+      mockFn();
+      menuClassRepository.findOneOrFail.mockResolvedValue({
+        name: 'testmenuclass',
+      });
+      menuRepository.create.mockReturnValueOnce(menu);
+      menuRepository.save.mockResolvedValue(menu);
+      const result = await service.createMenu(arg);
+      expect(result).toEqual(menu);
+      expect(menuRepository.create).toHaveBeenCalledWith(menu);
+    });
+    it('예기치 못한 에러', async () => {
+      const menu = {
+        ...arg.data,
+        menu_class: { name: 'testmenuclass' },
+      };
+      mockFn();
+      menuClassRepository.findOneOrFail.mockResolvedValue({
+        name: 'testmenuclass',
+      });
+      menuRepository.create.mockReturnValueOnce(menu);
+      menuRepository.save.mockRejectedValue(new Error());
+      const result = await service.createMenu(arg);
+      expect(result).toEqual(null);
+    });
   });
   describe('createMenuOption', () => {
     // pass
   });
-  describe('readyAllMenuClassByRestaurantId', () => {
+  describe('createMenuOptionSelection', () => {
     // pass
   });
+  describe('readyAllMenuClassByRestaurantId', () => {
+    const arg = {
+      restaurant_id: 1,
+    };
+    it('메뉴 클래스 목록 조회', async () => {
+      menuClassRepository.find.mockResolvedValue([{ name: 'fake' }]);
+      const result = await service.readyAllMenuClassByRestaurantId(arg);
+      expect(result).toEqual([{ name: 'fake' }]);
+    });
+    it('메뉴 클래스 목록 조회 실패', async () => {
+      menuClassRepository.find.mockRejectedValue(new Error());
+      const result = await service.readyAllMenuClassByRestaurantId(arg);
+      expect(result).toEqual(null);
+    });
+  });
   describe('readyMenuById', () => {
-    // pass
+    const arg = { id: 1 };
+    it('메뉴 상세 조회', async () => {
+      menuRepository.findOneOrFail.mockResolvedValue({ name: 'testmenu' });
+      const result = await service.readyMenuById(arg);
+      expect(result).toEqual({ name: 'testmenu' });
+    });
+    it('메뉴 상세 조회 실패', async () => {
+      menuRepository.findOneOrFail.mockRejectedValue(new Error());
+      const result = await service.readyMenuById(arg);
+      expect(result).toEqual(null);
+    });
   });
   describe('updateMenuClass', () => {
     // pass
@@ -96,15 +213,63 @@ describe('MenuService', () => {
     // pass
   });
   describe('deleteMenuClass', () => {
-    // pass
+    const arg = { owner_id: 1, menu_class_id: 2 };
+    it('delete메소드 정상 실행', async () => {
+      mockFn();
+      menuClassRepository.delete.mockResolvedValue(null);
+      const result = await service.deleteMenuClass(arg);
+      expect(result).toEqual(true);
+    });
+    it('delete메소드 실패', async () => {
+      mockFn();
+      menuClassRepository.delete.mockRejectedValue(new Error());
+      const result = await service.deleteMenuClass(arg);
+      expect(result).toEqual(false);
+    });
   });
   describe('deleteMenu', () => {
-    // pass
+    const arg = { owner_id: 1, menu_id: 2 };
+    it('delete메소드 정상 실행', async () => {
+      mockFn();
+      menuRepository.delete.mockResolvedValue(null);
+      const result = await service.deleteMenu(arg);
+      expect(result).toEqual(true);
+    });
+    it('delete메소드 실패', async () => {
+      mockFn();
+      menuRepository.delete.mockRejectedValue(new Error());
+      const result = await service.deleteMenu(arg);
+      expect(result).toEqual(false);
+    });
   });
   describe('deleteMenuOption', () => {
-    // pass
+    const arg = { owner_id: 1, option_id: 2 };
+    it('delete메소드 정상 실행', async () => {
+      mockFn();
+      optionRepository.delete.mockResolvedValue(null);
+      const result = await service.deleteMenuOption(arg);
+      expect(result).toEqual(true);
+    });
+    it('delete메소드 실패', async () => {
+      mockFn();
+      optionRepository.delete.mockRejectedValue(new Error());
+      const result = await service.deleteMenuOption(arg);
+      expect(result).toEqual(false);
+    });
   });
   describe('deleteMenuOptionSelection', () => {
-    // pass
+    const arg = { owner_id: 1, selection_id: 2 };
+    it('delete메소드 정상 실행', async () => {
+      mockFn();
+      selectionRepository.delete.mockResolvedValue(null);
+      const result = await service.deleteMenuOptionSelection(arg);
+      expect(result).toEqual(true);
+    });
+    it('delete메소드 실패', async () => {
+      mockFn();
+      selectionRepository.delete.mockRejectedValue(new Error());
+      const result = await service.deleteMenuOptionSelection(arg);
+      expect(result).toEqual(false);
+    });
   });
 });

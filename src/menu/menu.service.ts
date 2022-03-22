@@ -40,8 +40,8 @@ export class MenuService {
         { select: ['id'] },
       );
       return id;
-    } catch (error) {
-      return error;
+    } catch {
+      throw new Error('Restaurant Not Found');
     }
   }
 
@@ -73,7 +73,7 @@ export class MenuService {
         this.menuRepositry.create({
           name,
           price,
-          price_name,
+          ...(price_name && { price_name }),
           description,
           cover_image,
           menu_class,
@@ -108,7 +108,7 @@ export class MenuService {
 
   async readyMenuById({ id }: ByIdDTO): Promise<Menu | null> {
     try {
-      const menu = await this.menuRepositry.findOne(
+      const menu = await this.menuRepositry.findOneOrFail(
         { id },
         { relations: ['menu_option_class'] },
       );
