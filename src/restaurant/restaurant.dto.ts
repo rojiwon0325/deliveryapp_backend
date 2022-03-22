@@ -14,7 +14,7 @@ export class CreateDTO extends PickType(Restaurant, [
   'background_image',
   'category_id',
   'sub_category_id',
-]) {}
+] as const) {}
 
 export class ByIdDTO {
   @IsNumber()
@@ -53,7 +53,7 @@ export class UpdateRestaurantDTO extends PickType(PartialType(Restaurant), [
   'name',
   'category_id',
   'sub_category_id',
-]) {
+] as const) {
   @IsNumber()
   owner_id: number;
 }
