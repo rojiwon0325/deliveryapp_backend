@@ -25,7 +25,7 @@ export class MenuOption extends CoreEntity {
   menu: Menu;
 
   @RelationId((option: MenuOption) => option.menu)
-  menu_class_id: number;
+  menu_id: number;
 
   @OneToMany(() => MenuOptionSelection, (selection) => selection.menu_option, {
     eager: true,
