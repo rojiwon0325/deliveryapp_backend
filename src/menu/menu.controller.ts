@@ -1,9 +1,13 @@
+import { Public } from '@common/public.decorator';
+import { Roles } from '@common/role.decorator';
 import { Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { UserRole } from '@user/user.entity';
 import { MenuService } from './menu.service';
 
 @ApiTags('restaurant')
 @Controller('menu')
+@Roles(UserRole.Owner)
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
@@ -43,6 +47,7 @@ export class MenuController {
   }
 
   @Get(':menu_id')
+  @Public()
   readMenu() {
     return null;
   }
